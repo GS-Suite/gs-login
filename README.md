@@ -5,6 +5,11 @@
 
 ---
 
+### API Testing
+-- After running the app: http://127.0.0.1:8000/docs
+
+---
+
 ### .env.py
 -- contains `GS_DATABASE_URL`
 
