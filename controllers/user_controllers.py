@@ -1,3 +1,4 @@
+from controllers.token_controllers import refresh_token
 from helpers import user_helpers
 from models import user_model
 from fastapi import status
@@ -33,7 +34,7 @@ async def sign_in(user):
                 "success": True,
                 "message": "Successfully logged in",
                 "data": {
-                    "token": None
+                    "token": await refresh_token(res)
                 }
             }, status.HTTP_200_OK
     return {
