@@ -13,6 +13,7 @@ alembic = "*"
 asyncpg = "*"
 psycopg2 = "*"
 python-dotenv = "*"
+bcrypt = "*"
 
 [dev-packages]
 

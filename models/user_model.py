@@ -1,15 +1,14 @@
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.sql.sqltypes import DateTime
 from fastapi_sqlalchemy import db
+from models.base import Base
 import datetime
 
 
-Base = declarative_base()
-
-
 class User(Base):
+
     __tablename__ = "user"
+    
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique = True)
     password = Column(String)
@@ -35,13 +34,7 @@ async def create_user(user):
         print(e)
         return False
 
-
-async def login(user):
-    res = db.session.query(User).filter(
-        User.username == user.username, 
-        User.password == user.password
+async def get_user_by_username(username):
+    return db.session.query(User).filter(
+        User.username == username
     ).first()
-
-    if res:
-        return True
-    return False
