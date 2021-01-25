@@ -32,6 +32,12 @@ async def sign_in(user: UserSignIn, response: Response):
     response.status_code = status
     return res
 
+@app.post("/sign_out/")
+async def sign_out(token: str, response: Response):
+    res, status =  await user_controllers.sign_out(token)
+    response.status_code = status
+    return res
+
 @app.post("/validate_token/")
 async def validate_token(token: str, response: Response):
     res, status = await token_controllers.validate_token(token)

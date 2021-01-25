@@ -27,14 +27,17 @@ async def validate_token(token):
                     "valid_for": time_left 
                 }
             }, status.HTTP_200_OK
-    return {
-        "success": False,
-        "message": "Invalid token"
-    }, status.HTTP_401_UNAUTHORIZED
+        else:
+            return await refresh_token(res.user_id)
+    else:
+        return {
+            "success": False,
+            "message": "Invalid token"
+        }, status.HTTP_401_UNAUTHORIZED
 
-async def create_token(user):
+async def create_token(user_id):
     token_value = await token_helpers.generate_token()
-    token = await token_model.create_token(user, token_value)
+    token = await token_model.create_token(user_id, token_value)
     if token:
         return {
             "token": token.token_value,
@@ -44,9 +47,9 @@ async def create_token(user):
         "token": None
     }
 
-async def refresh_token(user):
+async def refresh_token(user_id):
     token_value = await token_helpers.generate_token()
-    token = await token_model.get_token_by_user(user)
+    token = await token_model.get_token_by_user(user_id)
     print("token", token)
     if token:
         refreshed = await token_model.update_token(token, token_value)
@@ -56,9 +59,11 @@ async def refresh_token(user):
                 "issued_at": refreshed.date_issued
             }
     else:
-        return await create_token(user)
+        return await create_token(user_id)
 
 async def delete_token(token_value):
-    token = token_model.get_token_by_value(token_value)
+    token = await token_model.get_token_by_value(token_value)
     if token:
-        return token_model.delete_token(token)
+        return await token_model.delete_token(token)
+    else:
+        return False

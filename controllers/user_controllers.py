@@ -1,4 +1,4 @@
-from controllers.token_controllers import refresh_token
+from controllers.token_controllers import refresh_token, delete_token
 from helpers import user_helpers
 from models import user_model
 from fastapi import status
@@ -34,10 +34,23 @@ async def sign_in(user):
                 "success": True,
                 "message": "Successfully logged in",
                 "data": {
-                    "token": await refresh_token(res)
+                    "token": await refresh_token(res.id)
                 }
             }, status.HTTP_200_OK
     return {
         "success": False,
         "message": "Invalid username or password"
     }, status.HTTP_401_UNAUTHORIZED
+
+async def sign_out(token_value):
+    res = await delete_token(token_value)
+    #print(res)
+    if res:    
+        return {
+            "success": True,
+            "message": "Successfully logged out"
+        }, status.HTTP_200_OK
+    return {
+            "success": False,
+            "message": "Invalid token"
+        }, status.HTTP_401_UNAUTHORIZED

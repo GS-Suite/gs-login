@@ -23,14 +23,14 @@ async def get_token_by_value(token):
         Token.token_value == token,
     ).first()
 
-async def get_token_by_user(user):
+async def get_token_by_user(user_id):
     return db.session.query(Token).filter(
-        Token.user_id == user.id,
+        Token.user_id == user_id,
     ).first()
 
-async def create_token(user, token_value):
+async def create_token(user_id, token_value):
     token = Token(
-        user_id = user.id,
+        user_id = user_id,
         token_value = token_value,
         date_issued = datetime.datetime.now()
     )
