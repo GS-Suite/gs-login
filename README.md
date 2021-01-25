@@ -1,6 +1,12 @@
-## Login 
+## Login ~ FastAPI, SQLAlchemy
 ---
 ### To run the app
+-- `pip install pipenv`
+
+-- `pipenv shell`
+
+-- `pipenv install`
+
 -- `uvicorn main:app --reload`
 
 ---
@@ -21,3 +27,5 @@
 -- Run migrations: `alembic upgrade head`
 
 -- Check out the documentation: https://alembic.sqlalchemy.org/en/latest/tutorial.html
+
+---
