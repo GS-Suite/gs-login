@@ -1,8 +1,8 @@
 from schemas.user_schema import UserSignIn, UserSignUp
 from fastapi_sqlalchemy import DBSessionMiddleware
+from fastapi import FastAPI, Response
 from controllers import user_controllers
 from dotenv import load_dotenv
-from fastapi import FastAPI
 import uvicorn
 import os
 
@@ -21,13 +21,15 @@ app.add_middleware(
 
 
 @app.post("/sign_up/")
-async def create_user(user: UserSignUp):
-    res = await user_controllers.sign_up(user)
+async def sign_up(user: UserSignUp, response: Response):
+    res, status = await user_controllers.sign_up(user)
+    response.status_code = status
     return res
 
 @app.post("/sign_in/")
-async def create_user(user: UserSignIn):
-    res =  await user_controllers.sign_in(user)
+async def sign_in(user: UserSignIn, response: Response):
+    res, status =  await user_controllers.sign_in(user)
+    response.status_code = status
     return res
 
 
