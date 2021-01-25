@@ -28,16 +28,6 @@ async def get_token_by_user(user):
         Token.user_id == user.id,
     ).first()
 
-async def update_token(token, token_value):
-    token.token_value = token_value, 
-    token.date_issued = datetime.datetime.now()
-    try:
-        db.session.commit()
-        return token
-    except Exception as e:
-        print(e)
-        return False
-
 async def create_token(user, token_value):
     token = Token(
         user_id = user.id,
@@ -46,6 +36,16 @@ async def create_token(user, token_value):
     )
     try:
         db.session.add(token)
+        db.session.commit()
+        return token
+    except Exception as e:
+        print(e)
+        return False
+
+async def update_token(token, token_value):
+    token.token_value = token_value, 
+    token.date_issued = datetime.datetime.now()
+    try:
         db.session.commit()
         return token
     except Exception as e:

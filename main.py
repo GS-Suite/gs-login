@@ -1,7 +1,7 @@
+from controllers import user_controllers, token_controllers
 from schemas.user_schema import UserSignIn, UserSignUp
 from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi import FastAPI, Response
-from controllers import user_controllers
 from dotenv import load_dotenv
 import uvicorn
 import os
@@ -29,6 +29,12 @@ async def sign_up(user: UserSignUp, response: Response):
 @app.post("/sign_in/")
 async def sign_in(user: UserSignIn, response: Response):
     res, status =  await user_controllers.sign_in(user)
+    response.status_code = status
+    return res
+
+@app.post("/validate_token/")
+async def validate_token(token: str, response: Response):
+    res, status = await token_controllers.validate_token(token)
     response.status_code = status
     return res
 
