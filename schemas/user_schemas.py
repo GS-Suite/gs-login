@@ -41,3 +41,6 @@ class UserSignIn(BaseModel):
         return v'''
 
 #print(UserSignIn.schema())
+
+class DeleteSchema(BaseModel):
+    password: str = Field(...)

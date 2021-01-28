@@ -1,10 +1,11 @@
+from fastapi import FastAPI, Response, BackgroundTasks, Header, Body
 from controllers import user_controllers, token_controllers
-from schemas.user_schemas import UserSignIn, UserSignUp
-from fastapi import FastAPI, Response, BackgroundTasks
+from schemas.user_schemas import UserSignIn, UserSignUp, DeleteSchema
 from schemas.classroom_schemas import ClassroomSchema
 from fastapi_sqlalchemy import DBSessionMiddleware
 from routes import user_routes, classroom_routes
 from dotenv import load_dotenv
+from typing import Optional
 import uvicorn
 import os
 
@@ -47,6 +48,11 @@ async def validate_token(token: str, response: Response):
 @app.post("/create_classroom/")
 async def create_classroom(token: str, classroom: ClassroomSchema, response: Response):
     return await classroom_routes.create_classroom(token, classroom, response)
+
+
+@app.post("/delete_account/")
+async def delete_account(response: Response, password: DeleteSchema, token: str = Header(None)):
+    return await user_routes.delete_account(password, token, response)
 
 
 if __name__ == "__main__":

@@ -35,6 +35,7 @@ async def validate_token(token):
             "message": "Invalid token"
         }, status.HTTP_401_UNAUTHORIZED
 
+
 async def create_token(user_id):
     token_value = await token_helpers.generate_token()
     token = await token_model.create_token(user_id, token_value)
@@ -46,6 +47,7 @@ async def create_token(user_id):
     return {
         "token": None
     }
+
 
 async def refresh_token(user_id):
     token_value = await token_helpers.generate_token()
@@ -60,6 +62,16 @@ async def refresh_token(user_id):
             }
     else:
         return await create_token(user_id)
+
+
+async def get_token_by_value(token_value):
+    return await token_model.get_token_by_value(token_value)
+
+
+async def delete_user_tokens(user_id):
+    tokens = await token_model.get_token_by_user(user_id)
+    await token_model.delete_token(tokens)    
+
 
 async def delete_token(token_value):
     token = await token_model.get_token_by_value(token_value)
