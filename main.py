@@ -1,7 +1,9 @@
+import re
 from controllers import user_controllers, token_controllers
-from schemas.user_schema import UserSignIn, UserSignUp
+from routes import user_routes
+from schemas.user_schemas import UserSignIn, UserSignUp
 from fastapi_sqlalchemy import DBSessionMiddleware
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, BackgroundTasks
 from dotenv import load_dotenv
 import uvicorn
 import os
@@ -22,21 +24,15 @@ app.add_middleware(
 
 @app.post("/sign_up/")
 async def sign_up(user: UserSignUp, response: Response):
-    res, status = await user_controllers.sign_up(user)
-    response.status_code = status
-    return res
+    return await user_routes.sign_up(user, response)
 
 @app.post("/sign_in/")
 async def sign_in(user: UserSignIn, response: Response):
-    res, status =  await user_controllers.sign_in(user)
-    response.status_code = status
-    return res
+    return await user_routes.sign_in(user, response)
 
 @app.post("/sign_out/")
-async def sign_out(token: str, response: Response):
-    res, status =  await user_controllers.sign_out(token)
-    response.status_code = status
-    return res
+async def sign_out(token: str, response: Response, background_tasks: BackgroundTasks):
+    return await user_routes.sign_out(token, response, background_tasks)
 
 @app.post("/validate_token/")
 async def validate_token(token: str, response: Response):

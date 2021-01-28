@@ -65,5 +65,4 @@ async def delete_token(token_value):
     token = await token_model.get_token_by_value(token_value)
     if token:
         return await token_model.delete_token(token)
-    else:
-        return False
+    return True

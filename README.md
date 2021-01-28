@@ -17,7 +17,7 @@
 ---
 
 ### .env.py
--- contains `GS_DATABASE_URL`
+-- contains `GS_DATABASE_URL`, `TOKEN_VALIDITY`
 
 ---
 
