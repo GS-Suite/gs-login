@@ -25,7 +25,7 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from models import user_model, token_model
+from models import user_model, token_model, classroom_model
 from models.base import Base
 target_metadata = Base.metadata
 
