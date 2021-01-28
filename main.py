@@ -1,7 +1,8 @@
-from controllers import user_controllers, token_controllers
+from controllers import user_controllers, token_controllers, classroom_controllers
 from schemas.user_schema import UserSignIn, UserSignUp
+from schemas.classroom_schema import ClassroomSchema
 from fastapi_sqlalchemy import DBSessionMiddleware
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, status
 from dotenv import load_dotenv
 import uvicorn
 import os
@@ -16,7 +17,7 @@ app = FastAPI()
 
 app.add_middleware(
     DBSessionMiddleware,
-    db_url = os.environ["GS_DATABASE_URL"]
+    db_url=os.environ["GS_DATABASE_URL"]
 )
 
 
@@ -26,17 +27,20 @@ async def sign_up(user: UserSignUp, response: Response):
     response.status_code = status
     return res
 
+
 @app.post("/sign_in/")
 async def sign_in(user: UserSignIn, response: Response):
-    res, status =  await user_controllers.sign_in(user)
+    res, status = await user_controllers.sign_in(user)
     response.status_code = status
     return res
 
+
 @app.post("/sign_out/")
 async def sign_out(token: str, response: Response):
-    res, status =  await user_controllers.sign_out(token)
+    res, status = await user_controllers.sign_out(token)
     response.status_code = status
     return res
+
 
 @app.post("/validate_token/")
 async def validate_token(token: str, response: Response):
@@ -45,5 +49,16 @@ async def validate_token(token: str, response: Response):
     return res
 
 
+@app.post("/create_classroom/")
+async def create_classroom(token: str, classroom: ClassroomSchema):
+    res, stat = await token.controllers.validate_token(token)
+    if stat == status.HTTP_200_OK:
+        return await classroom_controllers.create_class(classroom)
+    else:
+        return {
+            "Message":  "invalid token"
+        }
+
+
 if __name__ == "__main__":
-    uvicorn.run(app, host = "0.0.0.0", port = 8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
