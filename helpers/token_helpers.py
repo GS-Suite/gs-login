@@ -6,5 +6,5 @@ async def generate_token():
     gen = secrets.token_hex(32)
     while await get_token_by_value(gen):
         gen = secrets.token_hex(32)
-    print(gen)
+    #print(gen)
     return str(gen)

@@ -11,57 +11,48 @@ BASE_DIR = os.path.dirname(os.path.abspath("gs-login"))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 TOKEN_VALIDITY = datetime.timedelta(seconds = int(os.environ["TOKEN_VALIDITY"]))
+REFRESH_TIMEOUT = datetime.timedelta(seconds = int(os.environ["REFRESH_TIMEOUT"]))
 
 
 async def validate_token(token):
     ### processing
     res = await token_model.get_token_by_value(token)
+    print(res)
     if res:
         time_left = res.date_issued - datetime.datetime.now() + TOKEN_VALIDITY
-        if time_left > datetime.timedelta(seconds=0):
-            return {
-                "success": True,
-                "message": "Valid token",
-                "data": {
-                    "token": res.token_value,
-                    "valid_for": time_left 
-                }
-            }, status.HTTP_200_OK
-        else:
+        if time_left < datetime.timedelta(seconds = 0):
+            return False
+        elif time_left < REFRESH_TIMEOUT:
             return await refresh_token(res.user_id)
+        else:
+            return {
+                "token": res.token_value,
+                "valid_for": time_left 
+            }
     else:
-        return {
-            "success": False,
-            "message": "Invalid token"
-        }, status.HTTP_401_UNAUTHORIZED
-
-
-async def create_token(user_id):
-    token_value = await token_helpers.generate_token()
-    token = await token_model.create_token(user_id, token_value)
-    if token:
-        return {
-            "token": token.token_value,
-            "issued_at": token.date_issued
-        }
-    return {
-        "token": None
-    }
+        return False
 
 
 async def refresh_token(user_id):
+    print("refreshing")
     token_value = await token_helpers.generate_token()
-    token = await token_model.get_token_by_user(user_id)
-    print("token", token)
+    res = await token_model.refresh_token(user_id, token_value)
+    print(res.user_id)
+    if res:
+        return {
+            "token": res.token_value,
+            "valid_for": res.date_issued - datetime.datetime.now() + TOKEN_VALIDITY 
+        }
+    return False
+
+
+async def refresh_token_by_token(token_value):
+    token = await get_token_by_value(token_value)
     if token:
-        refreshed = await token_model.update_token(token, token_value)
-        if refreshed:
-            return {
-                "token": refreshed.token_value,
-                "issued_at": refreshed.date_issued
-            }
-    else:
-        return await create_token(user_id)
+        res = await refresh_token(token.user_id)
+        if res:
+            return res
+    return False
 
 
 async def get_token_by_value(token_value):

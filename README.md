@@ -12,12 +12,17 @@
 ---
 
 ### API Testing
--- After running the app: http://127.0.0.1:8000/docs
-
+-- After running the app:
+- http://127.0.0.1:8000/docs
+- http://127.0.0.1:8000/redoc
 ---
 
 ### .env.py
--- contains `GS_DATABASE_URL`, `TOKEN_VALIDITY`
+-- Contains `GS_DATABASE_URL`, `TOKEN_VALIDITY`
+
+-- To load the variables:
+- `pipenv run pip freeze > .\requirements.txt`
+- `pipenv install`
 
 ---
 
