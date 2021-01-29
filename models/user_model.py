@@ -18,6 +18,8 @@ class User(Base):
     last_name = Column(String)
     date_joined = Column(DateTime, default=datetime.datetime.now())
 
+    classroom = relationship("Classroom")
+
 
 async def create_user(user):
     db_user = User(
@@ -41,10 +43,12 @@ async def get_user_by_username(username):
         User.username == username
     ).first()
 
+
 async def get_user_by_id(user_id):
     return db.session.query(User).filter(
         User.id == user_id
     ).first()
+
 
 async def delete_user(user):
     try:
