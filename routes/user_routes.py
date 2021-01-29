@@ -16,7 +16,7 @@ async def sign_up(user, response):
 async def sign_in(user, response):
     res = await user_controllers.sign_in(user)
     if res:
-        print(res)
+        #print(res)
         response.status_code = status.HTTP_200_OK
         return {"success": True, "message": "Successfully logged in", "data": {"token": res}}
 

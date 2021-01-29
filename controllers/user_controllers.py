@@ -1,4 +1,3 @@
-from starlette.status import HTTP_401_UNAUTHORIZED
 from controllers import token_controllers
 from helpers import user_helpers
 from models import user_model
