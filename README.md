@@ -18,7 +18,7 @@
 ---
 
 ### .env.py
--- Contains `GS_DATABASE_URL`, `TOKEN_VALIDITY`
+-- Contains `GS_DATABASE_URL`
 
 -- To load the variables:
 - `pipenv run pip freeze > .\requirements.txt`
