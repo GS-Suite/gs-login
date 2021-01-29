@@ -60,7 +60,3 @@ async def create_classroom(token: str, classroom: classroom_schemas.ClassroomSch
 @app.post("/delete_account/")
 async def delete_account(response: Response, password: user_schemas.DeleteUserSchema, token: str = Header(None)):
     return await user_routes.delete_account(password, token, response)
-
-
-if __name__ == "__main__":
-    uvicorn.run(app, host = "0.0.0.0", port = 8000)

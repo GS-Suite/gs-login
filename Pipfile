@@ -14,6 +14,7 @@ asyncpg = "*"
 psycopg2 = "*"
 python-dotenv = "*"
 bcrypt = "*"
+gunicorn = "*"
 
 [dev-packages]
 
