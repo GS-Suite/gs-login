@@ -2,6 +2,7 @@ from schemas import user_schemas, token_schemas, classroom_schemas
 from routes import user_routes, classroom_routes, token_routes
 from fastapi import FastAPI, Response, BackgroundTasks, Header
 from fastapi_sqlalchemy import DBSessionMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import uvicorn
 import os
@@ -15,6 +16,19 @@ app = FastAPI()
 app.add_middleware(
     DBSessionMiddleware,
     db_url=os.environ["GS_DATABASE_URL"]
+)
+
+origins = [
+    "http://localhost:3000",
+    "https://gstestreact.herokuapp.com",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
