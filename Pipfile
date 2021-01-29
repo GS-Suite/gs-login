@@ -7,7 +7,7 @@ name = "pypi"
 fastapi-sqlalchemy = "*"
 fastapi = "*"
 sqlalchemy = {extras = ["postgres"], version = "*"}
-uvicorn = {extras = ["standard"], version = "^0.12.0"}
+uvicorn = {extras = ["standard"], version = "*"}
 pydantic = "*"
 alembic = "*"
 asyncpg = "*"
