@@ -10,9 +10,9 @@ class User(Base):
 
     __tablename__ = "user"
 
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True)
-    password = Column(String)
+    id = Column(Integer, primary_key = True, index = True)
+    username = Column(String, unique = True, nullable = False)
+    password = Column(String, nullable = False)
     email = Column(String)
     first_name = Column(String)
     last_name = Column(String)
