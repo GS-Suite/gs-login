@@ -10,11 +10,11 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath("gs-login"))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
-TOKEN_VALIDITY = datetime.timedelta(seconds = int(os.environ["TOKEN_VALIDITY"]))
+TOKEN_VALIDITY = datetime.timedelta(seconds=int(os.environ["TOKEN_VALIDITY"]))
 
 
 async def validate_token(token):
-    ### processing
+    # processing
     res = await token_model.get_token_by_value(token)
     if res:
         time_left = res.date_issued - datetime.datetime.now() + TOKEN_VALIDITY
@@ -24,11 +24,11 @@ async def validate_token(token):
                 "message": "Valid token",
                 "data": {
                     "token": res.token_value,
-                    "valid_for": time_left 
+                    "valid_for": time_left
                 }
             }, status.HTTP_200_OK
         else:
-            return await refresh_token(res.user_id)
+            return await refresh_token(res.user_id), status.HTTP_200_OK
     else:
         return {
             "success": False,
@@ -70,7 +70,7 @@ async def get_token_by_value(token_value):
 
 async def delete_user_tokens(user_id):
     tokens = await token_model.get_token_by_user(user_id)
-    await token_model.delete_token(tokens)    
+    await token_model.delete_token(tokens)
 
 
 async def delete_token(token_value):

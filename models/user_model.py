@@ -18,8 +18,6 @@ class User(Base):
     last_name = Column(String)
     date_joined = Column(DateTime, default=datetime.datetime.now())
 
-    classroom = relationship("Classroom")
-
 
 async def create_user(user):
     db_user = User(

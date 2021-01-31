@@ -46,8 +46,8 @@ async def validate_token(token: str, response: Response):
 
 
 @app.post("/create_classroom/")
-async def create_classroom(token: str, classroom: ClassroomSchema, response: Response):
-    return await classroom_routes.create_classroom(token, classroom, response)
+async def create_classroom(token: str, classroom: ClassroomSchema):
+    return await classroom_routes.create_classroom(token, classroom)
 
 
 @app.post("/delete_account/")
