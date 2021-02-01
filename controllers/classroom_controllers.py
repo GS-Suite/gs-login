@@ -7,8 +7,8 @@ async def create_class(token, classroom):
     # GET USER FROM TOKEN, PASS user id while creating class
 
     res = await get_token_by_value(token)
-    print(res.user_id)
-    print(type(classroom.class_name))
+    # print(res.user_id)
+    # print(type(classroom.class_name))
 
     resp = await classroom_model.create_classroom(res.user_id, classroom)
     if res == True:
