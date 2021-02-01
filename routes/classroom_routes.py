@@ -3,28 +3,17 @@ from fastapi import status
 
 
 async def create_classroom(token, classroom):
-    tkn, valToken_status_code = await token_controllers.validate_token(token)
 
-    '''
-        Be sure to notify the user on UI displaying user name
-    '''
+    tkn_validation_resp = await token_controllers.validate_token(token)
 
-    if type(tkn) == dict and valToken_status_code == status.HTTP_200_OK:
-        response = await classroom_controllers.create_class(token, classroom)
-        if response == status.HTTP_200_OK:
-            return {"success": True, "message": "Classroom created", "classroom_name": classroom.class_name}, response
-        else:
-            {"success": False, "message": "Classroom not created"}, response
-
-    elif type(tkn) != dict and valToken_status_code == status.HTTP_200_OK:
-        '''
-            Here 'tkn' will be the refresh token
-        '''
+    if tkn_validation_resp != False:
+        tkn = tkn_validation_resp['token']
+        print(tkn)
         response = await classroom_controllers.create_class(tkn, classroom)
         if response == status.HTTP_200_OK:
             return {"success": True, "message": "Classroom created", "classroom_name": classroom.class_name}, response
         else:
-            {"success": False, "message": "Classroom not created"}, response
+            return {"success": False, "message": "Classroom not created"}, response
 
     else:
         return {"success": False, "message": "Non-existent user"}, status.HTTP_401_UNAUTHORIZED

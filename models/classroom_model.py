@@ -21,7 +21,8 @@ class Classroom(Base):
 async def create_classroom(user_id, classroom):
     new_class = Classroom(
         creator_id=user_id,
-        class_name=classroom.class_name
+        class_name=classroom.class_name,
+        created_time=datetime.datetime.now()
     )
     try:
         db.session.add(new_class)
