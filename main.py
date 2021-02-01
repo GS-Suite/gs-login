@@ -67,7 +67,7 @@ async def refresh_token(token: token_schemas.TokenValidate, response: Response):
 
 
 @app.post("/create_classroom/")
-async def create_classroom(token: str, classroom: ClassroomSchema):
+async def create_classroom(classroom: classroom_schemas.ClassroomSchema, token: str = Header(None)):
     return await classroom_routes.create_classroom(token, classroom)
 
 
