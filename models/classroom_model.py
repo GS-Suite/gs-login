@@ -27,6 +27,7 @@ async def create_classroom(user_id, classroom):
     try:
         db.session.add(new_class)
         db.session.commit()
+        # print('Committed')
         return True
     except Exception as e:
         print(e)
