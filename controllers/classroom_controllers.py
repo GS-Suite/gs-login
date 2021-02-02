@@ -11,7 +11,7 @@ async def create_class(token, classroom):
     # print(type(classroom.class_name))
 
     resp = await classroom_model.create_classroom(res.user_id, classroom)
-    # print(resp)
+    print(resp)
     if resp == True:
         return status.HTTP_200_OK
     else:

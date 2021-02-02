@@ -10,12 +10,12 @@ import datetime
 class Classroom(Base):
     __tablename__ = "classroom"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key = True, index = True)
     creator_id = Column(Integer)
     class_name = Column(String)
     # enrolled_users = Column(JSON)
-    created_time = Column(DateTime, default=datetime.datetime.now())
-    unique_id = Column(Integer)
+    created_time = Column(DateTime, default = datetime.datetime.now())
+    unique_id = Column(String)
 
 async def create_classroom(user_id, classroom):
     new_class = Classroom(
