@@ -50,6 +50,11 @@ async def sign_out(token: str, response: Response, background_tasks: BackgroundT
     return await user_routes.sign_out(token, response, background_tasks)
 
 
+@app.post("/delete_account/")
+async def delete_account(response: Response, password: user_schemas.DeleteUserSchema, token: str = Header(None)):
+    return await user_routes.delete_account(password, token, response)
+
+
 '''TOKEN APIS'''
 
 
@@ -67,10 +72,5 @@ async def refresh_token(token: token_schemas.TokenValidate, response: Response):
 
 
 @app.post("/create_classroom/")
-async def create_classroom(token: str, classroom: classroom_schemas.ClassroomSchema):
+async def create_classroom(classroom: classroom_schemas.ClassroomSchema, token: str = Header(None)):
     return await classroom_routes.create_classroom(token, classroom)
-
-
-@app.post("/delete_account/")
-async def delete_account(response: Response, password: user_schemas.DeleteUserSchema, token: str = Header(None)):
-    return await user_routes.delete_account(password, token, response)
