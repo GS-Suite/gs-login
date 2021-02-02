@@ -1,14 +1,10 @@
 # from models.user_model import User
-from sqlalchemy.dialects.postgresql import insert, JSON
-from sqlalchemy import Column, Integer, String, ForeignKey, exc
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.sql.sqltypes import DateTime
-
+from helpers import classroom_helpers
 from fastapi_sqlalchemy import db
 from models.base import Base
 import datetime
-import string
-import random
-import re
 
 
 class Classroom(Base):
@@ -21,24 +17,14 @@ class Classroom(Base):
     created_time = Column(DateTime, default=datetime.datetime.now())
     unique_id = Column(Integer)
 
-
-async def id_generator(class_name, created_time):
-    size = 9
-    charSet = string.ascii_lowercase + string.ascii_uppercase + \
-        string.digits + class_name + created_time
-    charSet = re.sub(r"\s+", "", charSet)
-    charSet = charSet.strip()
-    return await ''.join(random.choice(charSet) for _ in range(size))
-
-
 async def create_classroom(user_id, classroom):
     new_class = Classroom(
-        creator_id=user_id,
-        class_name=classroom.class_name,
-        created_time=datetime.datetime.now(),
-        unique_id=id_generator(
-            class_name=classroom.class_name,
-            created_time=str(datetime.datetime.now())
+        creator_id = user_id,
+        class_name = classroom.class_name,
+        created_time = datetime.datetime.now(),
+        unique_id = await classroom_helpers.id_generator(
+            class_name = classroom.class_name,
+            created_time = str(datetime.datetime.now())
         )
     )
     try:
