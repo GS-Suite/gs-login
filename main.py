@@ -3,6 +3,7 @@ from routes import user_routes, classroom_routes, token_routes
 from fastapi import FastAPI, Response, BackgroundTasks, Header
 from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from dotenv import load_dotenv
 import uvicorn
 import os
@@ -31,6 +32,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+async def home_to_doc():
+    return RedirectResponse("/docs")
 
 '''USER APIS'''
 
