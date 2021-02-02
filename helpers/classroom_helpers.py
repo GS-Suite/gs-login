@@ -9,4 +9,4 @@ async def id_generator(class_name, created_time):
         string.digits + class_name + created_time
     charSet = re.sub(r"\s+", "", charSet)
     charSet = charSet.strip()
-    return await ''.join(random.choice(charSet) for _ in range(size))
+    return ''.join(random.choice(charSet) for _ in range(size))
